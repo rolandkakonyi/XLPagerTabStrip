@@ -314,12 +314,6 @@
 
 #pragma mark - Properties
 
-
--(NSUInteger)currentIndex
-{
-    return _currentIndex;
-}
-
 -(void)setCurrentIndex:(NSUInteger)currentIndex
 {
     if (self.pagerTabStripChildViewControllers.count > currentIndex){
