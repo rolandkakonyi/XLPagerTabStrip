@@ -24,6 +24,7 @@
 // THE SOFTWARE.
 
 
+#import "XLPagerTabStripViewController.h"
 #import "XLButtonBarView.h"
 
 @interface XLButtonBarView ()
@@ -55,55 +56,49 @@
     return self;
 }
 
--(void)initializeXLButtonBarView
+- (void)initializeXLButtonBarView
 {
     _selectedOptionIndex = 0;
     [self addSubview:self.selectedBar];
 }
 
 
--(void)moveToIndex:(NSUInteger)index animated:(BOOL)animated swipeDirection:(XLPagerTabStripDirection)swipeDirection
+- (void)moveToIndex:(NSUInteger)index animated:(BOOL)animated swipeDirection:(XLPagerTabStripDirection)swipeDirection
 {
     self.selectedOptionIndex = index;
-    [self updateSelectedBarPositionWithAnimation:animated swipeDirection:swipeDirection];
+    [self updateSelectedBarPositionWithAnimation:animated swipeDirection:swipeDirection scrollToSelected:YES];
 }
 
 
--(void)updateSelectedBarPositionWithAnimation:(BOOL)animation swipeDirection:(XLPagerTabStripDirection)swipeDirection
+- (void)updateSelectedBarPositionWithAnimation:(BOOL)animation swipeDirection:(XLPagerTabStripDirection)swipeDirection scrollToSelected:(BOOL)scrollToSelected
 {
-    CGRect frame = self.selectedBar.frame;
-    UICollectionViewCell * cell = [self.dataSource collectionView:self cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.selectedOptionIndex inSection:0]];
-    if (cell){
-        if (swipeDirection != XLPagerTabStripDirectionNone){
-            if (swipeDirection == XLPagerTabStripDirectionLeft)
-            {
-                float xValue = MIN(self.contentSize.width - self.frame.size.width, cell.frame.origin.x <= 35 ? 0 : cell.frame.origin.x - 35);
-                [self  setContentOffset:CGPointMake(xValue, 0) animated:animation];
-            }
-            else if (swipeDirection == XLPagerTabStripDirectionRight){
-                float xValue = MAX(0, cell.frame.origin.x + cell.frame.size.width - self.frame.size.width + 35);
-                [self  setContentOffset:CGPointMake(xValue, 0) animated:animation];
-            }
-            
+    UICollectionViewCell *cell = [self.dataSource collectionView:self cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.selectedOptionIndex inSection:0]];
+    if (cell) {
+        CGFloat cellMidX = CGRectGetMidX(cell.frame);
+        CGFloat xValue = cellMidX - CGRectGetWidth(self.frame) * 0.5f;
+        xValue = MAX(0, MIN(self.contentSize.width - CGRectGetWidth(self.frame), xValue));
+        if (scrollToSelected) {
+            [self setContentOffset:CGPointMake(xValue, 0) animated:animation];
         }
-    }
-    frame.size.width = cell.frame.size.width;
-    frame.origin.x = cell.frame.origin.x;
-    frame.origin.y = cell.frame.size.height - frame.size.height;
-    if (animation){
-        [UIView animateWithDuration:0.3 animations:^{
-            [self.selectedBar setFrame:frame];
-        }];
-    }
-    else{
-        self.selectedBar.frame = frame;
+        CGRect frame = self.selectedBar.frame;
+        frame.size.width = cell.frame.size.width;
+        frame.origin.x = cell.frame.origin.x;
+        frame.origin.y = cell.frame.size.height - frame.size.height;
+        if (animation) {
+            [UIView animateWithDuration:0.3 animations:^{
+                [self.selectedBar setFrame:frame];
+            }];
+        }
+        else {
+            self.selectedBar.frame = frame;
+        }
     }
 }
 
 
 #pragma mark - Properties
 
--(UIView *)selectedBar
+- (UIView *)selectedBar
 {
     if (_selectedBar) {
         return _selectedBar;
@@ -112,6 +107,12 @@
     _selectedBar.layer.zPosition = 9999;
     _selectedBar.backgroundColor = [UIColor blackColor];
     return _selectedBar;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self updateSelectedBarPositionWithAnimation:NO swipeDirection:XLPagerTabStripDirectionNone scrollToSelected:NO];
 }
 
 
