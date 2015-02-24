@@ -30,13 +30,10 @@
 
 @interface XLButtonBarView : UICollectionView
 
-@property (readonly, nonatomic) UIView * selectedBar;
-@property UIFont * labelFont;
-@property NSUInteger leftRightMargin;
+@property(readonly, nonatomic) UIView *selectedBar;
+@property(nonatomic) UIFont *labelFont;
+@property(nonatomic) NSUInteger leftRightMargin;
 
 -(void)moveToIndex:(NSUInteger)index animated:(BOOL)animated swipeDirection:(XLPagerTabStripDirection)swipeDirection;
-
-
-
 
 @end

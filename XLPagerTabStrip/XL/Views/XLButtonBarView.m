@@ -28,8 +28,8 @@
 
 @interface XLButtonBarView ()
 
-@property UIView * selectedBar;
-@property NSUInteger selectedOptionIndex;
+@property(readwrite, nonatomic) UIView *selectedBar;
+@property(nonatomic) NSUInteger selectedOptionIndex;
 
 @end
 

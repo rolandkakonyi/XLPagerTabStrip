@@ -80,7 +80,7 @@ typedef NS_ENUM(NSUInteger, XLPagerTabStripDirection) {
 @property (nonatomic, assign) IBOutlet id<XLPagerTabStripViewControllerDelegate> delegate;
 @property (nonatomic, assign) IBOutlet id<XLPagerTabStripViewControllerDataSource> dataSource;
 
-@property (readonly) NSUInteger currentIndex;
+@property (nonatomic, readonly) NSUInteger currentIndex;
 @property BOOL skipIntermediateViewControllers;
 
 -(void)moveToViewControllerAtIndex:(NSUInteger)index;
