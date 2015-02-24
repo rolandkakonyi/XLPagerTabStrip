@@ -128,7 +128,7 @@
             self.view.userInteractionEnabled = NO;
         }
         _originalPagerTabStripChildViewControllers = originalPagerTabStripChildViewControllers;
-        [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:index], 0) animated:YES];
+        [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:(NSUInteger) index], 0) animated:YES];
     }
     else{
         [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:index], 0) animated:animated];
