@@ -26,7 +26,7 @@
 #import "XLButtonBarViewCell.h"
 #import "XLButtonBarPagerTabStripViewController.h"
 
-@interface XLButtonBarPagerTabStripViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface XLButtonBarPagerTabStripViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic) IBOutlet XLButtonBarView * buttonBarView;
 @property (nonatomic) BOOL shouldUpdateButtonBarView;
@@ -103,7 +103,6 @@
     if (_buttonBarView) return _buttonBarView;
     UICollectionViewFlowLayout * flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-    [flowLayout setSectionInset:UIEdgeInsetsMake(0, 35, 0, 35)];
     _buttonBarView = [[XLButtonBarView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50.0f) collectionViewLayout:flowLayout];
     _buttonBarView.backgroundColor = [UIColor orangeColor];
     _buttonBarView.selectedBar.backgroundColor = [UIColor blackColor];
@@ -127,7 +126,7 @@
 
 
 
-#pragma merk - UICollectionViewDelegateFlowLayout
+#pragma mark - UICollectionViewDelegateFlowLayout
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -139,6 +138,10 @@
     CGSize labelSize = [label intrinsicContentSize];
     
     return CGSizeMake(labelSize.width + (self.buttonBarView.leftRightMargin * 2), collectionView.frame.size.height);
+}
+
+- (UIEdgeInsets)collectionView:(__unused UICollectionView *)collectionView layout:(__unused UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(__unused NSInteger)section {
+    return UIEdgeInsetsMake(0, 35, 0, 35);
 }
 
 #pragma mark - UICollectionViewDelegate
