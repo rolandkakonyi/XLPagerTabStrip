@@ -270,7 +270,7 @@
     }
 }
 
-#pragma mark - UIScrollViewDelegte
+#pragma mark - UIScrollViewDelegate
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
