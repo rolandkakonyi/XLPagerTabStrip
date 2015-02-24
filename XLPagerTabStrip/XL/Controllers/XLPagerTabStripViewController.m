@@ -110,15 +110,22 @@
     [self moveToViewControllerAtIndex:index animated:YES];
 }
 
--(void)moveToViewControllerAtIndex:(NSInteger)index withDirection:(XLPagerTabStripDirection)direction animated:(BOOL)animated
+-(void)moveToViewControllerAtIndex:(NSUInteger)index withDirection:(XLPagerTabStripDirection)direction animated:(BOOL)animated
 {
-    if (self.skipIntermediateViewControllers && fabs(self.currentIndex - index) > 1){
+    NSUInteger originalIndex = self.currentIndex;
+    if (self.currentIndex != index) {
+        self.currentIndex = (NSUInteger) index;
+    }
+
+    if (self.skipIntermediateViewControllers && abs(originalIndex - index) > 1 && animated){
         NSArray * originalPagerTabStripChildViewControllers = self.pagerTabStripChildViewControllers;
         NSMutableArray * tempChildViewControllers = [NSMutableArray arrayWithArray:originalPagerTabStripChildViewControllers];
-        UIViewController * currentChildVC = [originalPagerTabStripChildViewControllers objectAtIndex:self.currentIndex];
         NSUInteger fromIndex = (direction == XLPagerTabStripDirectionLeft) ? index - 1 : index + 1;
-                [tempChildViewControllers setObject:[originalPagerTabStripChildViewControllers objectAtIndex:fromIndex] atIndexedSubscript:self.currentIndex];
-        [tempChildViewControllers setObject:currentChildVC atIndexedSubscript:fromIndex];
+
+        UIViewController * currentChildVC = originalPagerTabStripChildViewControllers[originalIndex];
+        tempChildViewControllers[originalIndex] = originalPagerTabStripChildViewControllers[fromIndex];
+        tempChildViewControllers[fromIndex] = currentChildVC;
+
         _pagerTabStripChildViewControllers = tempChildViewControllers;
         [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:fromIndex], 0) animated:NO];
         if (self.navigationController){
@@ -130,8 +137,11 @@
         _originalPagerTabStripChildViewControllers = originalPagerTabStripChildViewControllers;
         [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:(NSUInteger) index], 0) animated:YES];
     }
-    else{
-        [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:index], 0) animated:animated];
+    else {
+        [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:(NSUInteger) index], 0) animated:animated];
+        if (!animated) {
+            [self updateContent];
+        }
     }
 }
 
@@ -216,7 +226,7 @@
 {
     NSArray * childViewControllers = self.pagerTabStripChildViewControllers;
     if (self.containerView.contentSize.width != CGRectGetWidth(self.containerView.bounds) * childViewControllers.count) {
-    self.containerView.contentSize = CGSizeMake(CGRectGetWidth(self.containerView.bounds) * childViewControllers.count, self.containerView.contentSize.height);
+        self.containerView.contentSize = CGSizeMake(CGRectGetWidth(self.containerView.bounds) * childViewControllers.count, self.containerView.contentSize.height);
         [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:self.currentIndex], 0) animated:NO];
     }
 
@@ -320,7 +330,7 @@
 
 -(void)setCurrentIndex:(NSUInteger)currentIndex
 {
-    if (self.pagerTabStripChildViewControllers.count > currentIndex){
+    if (self.pagerTabStripChildViewControllers.count > currentIndex && currentIndex != _currentIndex){
         UIViewController * fromViewController = nil;
         if (self.pagerTabStripChildViewControllers.count > _currentIndex){
             fromViewController = [self.pagerTabStripChildViewControllers objectAtIndex:_currentIndex];
