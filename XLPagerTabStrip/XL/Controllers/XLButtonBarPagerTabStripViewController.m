@@ -134,7 +134,7 @@
     UILabel * label = [[UILabel alloc] init];
     [label setTranslatesAutoresizingMaskIntoConstraints:NO];
     label.font = self.buttonBarView.labelFont;
-    UIViewController<XLPagerTabStripChildItem> * childController =   [self.pagerTabStripChildViewControllers objectAtIndex:indexPath.item];
+    UIViewController<XLPagerTabStripChildItem> * childController = self.pagerTabStripChildViewControllers[(NSUInteger) indexPath.item];
     [label setText:[childController titleForPagerTabStripViewController:self]];
     CGSize labelSize = [label intrinsicContentSize];
     
@@ -146,9 +146,9 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.buttonBarView moveToIndex:indexPath.item animated:YES swipeDirection:XLPagerTabStripDirectionNone];
+    [self.buttonBarView moveToIndex:(NSUInteger) indexPath.item animated:YES swipeDirection:XLPagerTabStripDirectionNone];
     self.shouldUpdateButtonBarView = NO;
-    [self moveToViewControllerAtIndex:indexPath.item];  
+    [self moveToViewControllerAtIndex:(NSUInteger) indexPath.item];
 }
 
 #pragma merk - UICollectionViewDataSource
@@ -166,8 +166,8 @@
         cell = [[XLButtonBarViewCell alloc] initWithFrame:CGRectMake(0, 0, 50, self.buttonBarView.frame.size.height)];
     }
     NSAssert([cell isKindOfClass:[XLButtonBarViewCell class]], @"UICollectionViewCell should be or extend XLButtonBarViewCell");
-    XLButtonBarViewCell * buttonBarCell = (XLButtonBarViewCell *)cell;
-    UIViewController<XLPagerTabStripChildItem> * childController =   [self.pagerTabStripChildViewControllers objectAtIndex:indexPath.item];
+    XLButtonBarViewCell * buttonBarCell = (XLButtonBarViewCell *) cell;
+    UIViewController<XLPagerTabStripChildItem> * childController = self.pagerTabStripChildViewControllers[(NSUInteger) indexPath.item];
     
     [buttonBarCell.label setText:[childController titleForPagerTabStripViewController:self]];
     
