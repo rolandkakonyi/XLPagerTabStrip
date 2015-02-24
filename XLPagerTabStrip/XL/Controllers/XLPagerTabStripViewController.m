@@ -142,10 +142,10 @@
     }
     else{
         if (self.currentIndex < index){
-            [self moveToViewControllerAtIndex:index withDirection:XLPagerTabStripDirectionLeft animated:YES];
+            [self moveToViewControllerAtIndex:index withDirection:XLPagerTabStripDirectionLeft animated:animated];
         }
         else if (self.currentIndex > index){
-            [self moveToViewControllerAtIndex:index withDirection:XLPagerTabStripDirectionRight animated:YES];
+            [self moveToViewControllerAtIndex:index withDirection:XLPagerTabStripDirectionRight animated:animated];
         }
     }
 }
