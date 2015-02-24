@@ -185,7 +185,7 @@
 
 -(CGFloat)offsetForChildIndex:(NSUInteger)index
 {
-    return (index * CGRectGetWidth(self.containerView.bounds) + ((CGRectGetWidth(self.containerView.bounds) - CGRectGetWidth(self.view.bounds)) * 0.5));
+    return (index * CGRectGetWidth(self.containerView.bounds) + ((CGRectGetWidth(self.containerView.bounds) - CGRectGetWidth(self.view.bounds)) * 0.5f));
 }
 
 -(CGFloat)offsetForChildViewController:(UIViewController *)viewController
