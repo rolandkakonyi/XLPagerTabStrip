@@ -215,7 +215,11 @@
 -(void)updateContent
 {
     NSArray * childViewControllers = self.pagerTabStripChildViewControllers;
+    if (self.containerView.contentSize.width != CGRectGetWidth(self.containerView.bounds) * childViewControllers.count) {
     self.containerView.contentSize = CGSizeMake(CGRectGetWidth(self.containerView.bounds) * childViewControllers.count, self.containerView.contentSize.height);
+        [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:self.currentIndex], 0) animated:NO];
+    }
+
     NSUInteger currentPage = [self pageForContentOffset:self.containerView.contentOffset.x];
     if (currentPage != self.currentIndex){
         self.currentIndex = currentPage;
