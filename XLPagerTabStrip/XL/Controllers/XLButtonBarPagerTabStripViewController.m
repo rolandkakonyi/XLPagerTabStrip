@@ -82,7 +82,7 @@
     [super viewWillAppear:animated];
     UICollectionViewLayoutAttributes *attributes = [self.buttonBarView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentIndex inSection:0]];
     CGRect cellRect = attributes.frame;
-    [self.buttonBarView.selectedBar setFrame:CGRectMake(cellRect.origin.x, self.buttonBarView.frame.size.height - 5, cellRect.size.width, 5)];
+    [self.buttonBarView.selectedBar setFrame:CGRectMake(CGRectGetMinX(cellRect), CGRectGetHeight(cellRect) - CGRectGetHeight(self.buttonBarView.frame), CGRectGetWidth(cellRect), CGRectGetHeight(self.buttonBarView.frame))];
 }
 
 -(void)reloadPagerTabStripView
