@@ -72,25 +72,27 @@
 
 - (void)updateSelectedBarPositionWithAnimation:(BOOL)animation swipeDirection:(XLPagerTabStripDirection)swipeDirection scrollToSelected:(BOOL)scrollToSelected
 {
-    UICollectionViewCell *cell = [self.dataSource collectionView:self cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.selectedOptionIndex inSection:0]];
-    if (cell) {
-        CGFloat cellMidX = CGRectGetMidX(cell.frame);
-        CGFloat xValue = cellMidX - CGRectGetWidth(self.frame) * 0.5f;
-        xValue = MAX(0, MIN(self.contentSize.width - CGRectGetWidth(self.frame), xValue));
-        if (scrollToSelected) {
-            [self setContentOffset:CGPointMake(xValue, 0) animated:animation];
-        }
-        CGRect frame = self.selectedBar.frame;
-        frame.size.width = cell.frame.size.width;
-        frame.origin.x = cell.frame.origin.x;
-        frame.origin.y = cell.frame.size.height - frame.size.height;
-        if (animation) {
-            [UIView animateWithDuration:0.3 animations:^{
-                [self.selectedBar setFrame:frame];
-            }];
-        }
-        else {
-            self.selectedBar.frame = frame;
+    if ([self.dataSource collectionView:self numberOfItemsInSection:0] > 0) {
+        UICollectionViewCell *cell = [self.dataSource collectionView:self cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.selectedOptionIndex inSection:0]];
+        if (cell) {
+            CGFloat cellMidX = CGRectGetMidX(cell.frame);
+            CGFloat xValue = cellMidX - CGRectGetWidth(self.frame) * 0.5f;
+            xValue = MAX(0, MIN(self.contentSize.width - CGRectGetWidth(self.frame), xValue));
+            if (scrollToSelected) {
+                [self setContentOffset:CGPointMake(xValue, 0) animated:animation];
+            }
+            CGRect frame = self.selectedBar.frame;
+            frame.size.width = cell.frame.size.width;
+            frame.origin.x = cell.frame.origin.x;
+            frame.origin.y = cell.frame.size.height - frame.size.height;
+            if (animation) {
+                [UIView animateWithDuration:0.3 animations:^{
+                    [self.selectedBar setFrame:frame];
+                }];
+            }
+            else {
+                self.selectedBar.frame = frame;
+            }
         }
     }
 }

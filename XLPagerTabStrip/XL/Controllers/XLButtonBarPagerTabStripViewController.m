@@ -80,9 +80,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    UICollectionViewLayoutAttributes *attributes = [self.buttonBarView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentIndex inSection:0]];
-    CGRect cellRect = attributes.frame;
-    [self.buttonBarView.selectedBar setFrame:CGRectMake(CGRectGetMinX(cellRect), CGRectGetHeight(cellRect) - CGRectGetHeight(self.buttonBarView.frame), CGRectGetWidth(cellRect), CGRectGetHeight(self.buttonBarView.frame))];
+    if ([self.buttonBarView numberOfItemsInSection:0] > 0) {
+        UICollectionViewLayoutAttributes *attributes = [self.buttonBarView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentIndex inSection:0]];
+        CGRect cellRect = attributes.frame;
+        [self.buttonBarView.selectedBar setFrame:CGRectMake(CGRectGetMinX(cellRect), CGRectGetHeight(cellRect) - CGRectGetHeight(self.buttonBarView.frame), CGRectGetWidth(cellRect), CGRectGetHeight(self.buttonBarView.frame))];
+    }
 }
 
 -(void)reloadPagerTabStripView
@@ -136,7 +138,7 @@
     UIViewController<XLPagerTabStripChildItem> * childController = self.pagerTabStripChildViewControllers[(NSUInteger) indexPath.item];
     [label setText:[childController titleForPagerTabStripViewController:self]];
     CGSize labelSize = [label intrinsicContentSize];
-    
+
     return CGSizeMake(labelSize.width + (self.buttonBarView.leftRightMargin * 2), collectionView.frame.size.height);
 }
 
@@ -171,9 +173,9 @@
     NSAssert([cell isKindOfClass:[XLButtonBarViewCell class]], @"UICollectionViewCell should be or extend XLButtonBarViewCell");
     XLButtonBarViewCell * buttonBarCell = (XLButtonBarViewCell *) cell;
     UIViewController<XLPagerTabStripChildItem> * childController = self.pagerTabStripChildViewControllers[(NSUInteger) indexPath.item];
-    
+
     [buttonBarCell.label setText:[childController titleForPagerTabStripViewController:self]];
-    
+
     return buttonBarCell;
 }
 
