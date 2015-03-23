@@ -75,10 +75,10 @@
     if ([self.dataSource collectionView:self numberOfItemsInSection:0] > 0) {
         UICollectionViewCell *cell = [self.dataSource collectionView:self cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.selectedOptionIndex inSection:0]];
         if (cell) {
-            CGFloat cellMidX = CGRectGetMidX(cell.frame);
-            CGFloat xValue = cellMidX - CGRectGetWidth(self.frame) * 0.5f;
-            xValue = MAX(0, MIN(self.contentSize.width - CGRectGetWidth(self.frame), xValue));
             if (scrollToSelected) {
+                CGFloat cellMidX = roundf(CGRectGetMidX(cell.frame));
+                CGFloat xValue = cellMidX - CGRectGetWidth(self.frame) * 0.5f;
+                xValue = MAX(0, MIN(self.contentSize.width - CGRectGetWidth(self.frame), xValue));
                 [self setContentOffset:CGPointMake(xValue, 0) animated:animation];
             }
             CGRect frame = self.selectedBar.frame;
