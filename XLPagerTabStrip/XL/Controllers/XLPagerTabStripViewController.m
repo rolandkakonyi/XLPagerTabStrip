@@ -224,6 +224,7 @@
 
 -(void)updateContent
 {
+    [self.containerView layoutIfNeeded];
     NSArray * childViewControllers = self.pagerTabStripChildViewControllers;
     if (self.containerView.contentSize.width != CGRectGetWidth(self.containerView.bounds) * childViewControllers.count) {
         self.containerView.contentSize = CGSizeMake(CGRectGetWidth(self.containerView.bounds) * childViewControllers.count, self.containerView.contentSize.height);
