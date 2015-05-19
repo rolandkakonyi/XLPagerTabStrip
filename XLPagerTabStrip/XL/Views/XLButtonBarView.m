@@ -32,6 +32,7 @@
 @property(readwrite, nonatomic) UIView *selectedBar;
 @property(nonatomic) NSUInteger selectedOptionIndex;
 
+@property(nonatomic) CGSize lastContentSize;
 @end
 
 @implementation XLButtonBarView
@@ -111,10 +112,16 @@
     return _selectedBar;
 }
 
+- (void)reloadData {
+    self.lastContentSize = self.contentSize;
+    [super reloadData];
+}
+
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self updateSelectedBarPositionWithAnimation:NO swipeDirection:XLPagerTabStripDirectionNone scrollToSelected:NO];
+    [self updateSelectedBarPositionWithAnimation:NO swipeDirection:XLPagerTabStripDirectionNone scrollToSelected:!CGSizeEqualToSize(self.contentSize, self.lastContentSize)];
 }
 
 
