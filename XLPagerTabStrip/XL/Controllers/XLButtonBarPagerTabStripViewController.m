@@ -56,6 +56,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    _buttonBarView.delegate = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

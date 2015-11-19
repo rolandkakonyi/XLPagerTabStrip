@@ -63,6 +63,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    _containerView.delegate = nil;
+    _delegate = nil;
+}
 
 -(void)pagerTabStripViewControllerInit
 {
@@ -90,7 +95,7 @@
     self.containerView.showsVerticalScrollIndicator = NO;
     self.containerView.showsHorizontalScrollIndicator = NO;
     self.containerView.pagingEnabled = YES;
-    
+
     if (self.dataSource){
         _pagerTabStripChildViewControllers = [self.dataSource childViewControllersForPagerTabStripViewController:self];
     }
@@ -336,7 +341,7 @@
         if (self.pagerTabStripChildViewControllers.count > _currentIndex){
             fromViewController = [self.pagerTabStripChildViewControllers objectAtIndex:_currentIndex];
         }
-        
+
         _currentIndex = currentIndex;
         if ([self.delegate respondsToSelector:@selector(pagerTabStripViewController:updateIndicatorToViewController:fromViewController:)]){
             [self.delegate pagerTabStripViewController:self updateIndicatorToViewController:[self.pagerTabStripChildViewControllers objectAtIndex:_currentIndex] fromViewController:fromViewController];
@@ -357,7 +362,7 @@
     self.currentIndex = _pageBeforeRotate;
     self.containerView.contentSize = CGSizeMake(CGRectGetWidth(self.containerView.bounds) * self.pagerTabStripChildViewControllers.count, self.containerView.contentSize.height);
     [self.containerView setContentOffset:CGPointMake([self pageOffsetForChildIndex:_pageBeforeRotate], 0) animated:NO];
-    
+
     [self updateContent];
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
